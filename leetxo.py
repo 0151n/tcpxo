@@ -1,6 +1,5 @@
 import socket
 import random
-import re
 
 #function to check if a player has won
 def checkboard(in_board):
@@ -35,7 +34,7 @@ while True:
 	print("[4] quit")
 	ans = raw_input(":>")
 	#break if user wishes to quit
-	if(ans == ""):
+	if(ans == "4"):
 		print("goodbye")
 		break
 	#get name from user
@@ -51,6 +50,8 @@ while True:
 		#listen for connections
 		s.listen(5)
 		while True:
+			#reinitialize board array
+			board = [" "," "," "," "," "," "," "," "," "]
 			#setting up game and connection
 			#accet connection
 			c, addr = s.accept()
@@ -75,7 +76,11 @@ while True:
 			#set game bool to false
 			gameover = False
 			#loop until game is killed
+			#loop counter
+			counter = 0
 			while gameover == False:
+				#increment the counter
+				counter += 1
 				#if player is server
 				if(cplayer == 0):
 					print("It is your go, make a move")
@@ -108,8 +113,10 @@ while True:
 							print("that is not a number between 1 and 9")
 				#check if game is over
 				result = checkboard(board)
-				if(result != " "):
+				if(result != " " or counter == 9):
 					print("gameover")
+					if(counter == 9):
+						print "game was a draw"
 					if(result == "X"):
 						print("X has won")
 					elif(result == "O"):
@@ -135,8 +142,10 @@ while True:
 					print("+-----+")
 					cplayer = 0
 					result = checkboard(board)
-					if(result != " "):
+					if(result != " " or counter == 9):
 						print("gameover")
+						if(counter == 9):
+							print("game was a draw")
 						if(result == "X"):
 							print("X has won")
 						elif(result == "O"):
